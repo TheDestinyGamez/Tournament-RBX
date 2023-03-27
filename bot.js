@@ -8,6 +8,7 @@
 // Declare constants which will be used throughout the bot.
 
 const fs = require("fs");
+
 const {
 	Client,
 	Collection,
@@ -16,7 +17,17 @@ const {
 } = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
-const { token, client_id, test_guild_id } = require("./config.json");
+const { COOKIE, token, client_id, test_guild_id } = require("./config.json");
+//noblox set cookie init below
+const noblox = require('noblox.js')
+async function startApp () {
+    // You MUST call setCookie() before using any authenticated methods [marked by 🔐]
+    // Replace the parameter in setCookie() with your .ROBLOSECURITY cookie.
+    const currentUser = await noblox.setCookie(COOKIE) 
+    console.log(`Logged in as ${currentUser.UserName} [${currentUser.UserID}]`)
+    // Do everything else, calling functions and the like.
+}
+startApp()
 
 /**
  * From v13, specifying the intents is compulsory.

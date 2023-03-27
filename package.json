@@ -40,6 +40,8 @@
 		"@discordjs/rest": "^1.6.0",
 		"discord-api-types": "^0.37.36",
 		"discord.js": "^14.8.0",
-		"nodemon": "^2.0.22"
+		"noblox.js": "^4.14.0",
+		"nodemon": "^2.0.22",
+		"undici": "^5.21.0"
 	}
 }
