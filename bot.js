@@ -18,6 +18,7 @@ const {
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { COOKIE, token, client_id, test_guild_id } = require("./config.json");
+const axios = require('axios').default;
 //noblox set cookie init below
 const noblox = require('noblox.js')
 async function startApp () {
