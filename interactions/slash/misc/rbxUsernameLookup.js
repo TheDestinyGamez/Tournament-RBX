@@ -6,7 +6,7 @@
  */
 
 const { EmbedBuilder, ChannelType, SlashCommandBuilder, Client, ClientApplication, ClientUser, UserFlags, User, Options, UserFlagsBitField, userMention } = require("discord.js");
-const noblox = require("noblox.js");
+const axios = require('axios').default;
 const { client_id } = require("../../../config.json");
 const client = require("../../../bot")
 /**
@@ -34,12 +34,29 @@ module.exports = {
       //ADD TRYCATCH LATER FOR IF :"username" IS NULL
       const queriedUsername = interaction.options.getString("username");
       //add username history info part
-      const activeUsername = queriedUsername // UPDATE TO USERHISTORY VALIDATION LATER
-      const userId = await noblox.getIdFromUsername([`${queriedUsername}`]);
-      let profileLinkRoblox = `https://www.roblox.com/users/`+`${userId}`+`/profile`
+      const axios = require('axios');
+      const robloxUsernameToIdApiCallResponse = await axios.post(
+        'https://users.roblox.com/v1/usernames/users',
+        // '{\n  "usernames": [\n    "TheDestinyGamez"\n  ],\n  "excludeBannedUsers": true\n}',
+        {
+          'usernames': [
+            `${queriedUsername}`
+          ],
+          'excludeBannedUsers': true
+        },
+        {
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      console.log(robloxUsernameToIdApiCallResponse.data.data[0].id)
+      
+      let profileLinkRoblox = `https://www.roblox.com/users/`+`${robloxUsernameToIdApiCallResponse.data.data[0].id}`+`/profile`
 
       //checking to see if the user exists
-      let doesUserExistOnRoblox = userId ?? 1
+      let doesUserExistOnRoblox = robloxUsernameToIdApiCallResponse.data.data[0].id ?? 1
       console.log(doesUserExistOnRoblox)
       if (doesUserExistOnRoblox == 1) {
         interaction.reply(`The roblox username, "${queriedUsername}" you have requested information on does not exist, maybe check your spelling of it?`)
@@ -48,9 +65,9 @@ module.exports = {
       } else {
         console.log(`Username exists, grabbing data now`)
       }
-      let userSocialLinks = await noblox.getUserSocialLinks(userId);
-      const thumbnail_CircleHeadshot = await noblox.getPlayerThumbnail(`${userId}`, 420, `png`, true, `Headshot`).then(result => { return result[0].imageUrl });
-      const playerRobloxData = await noblox.getPlayerInfo(userId)
+      //let userSocialLinks = await noblox.getUserSocialLinks(userId);
+      //const thumbnail_CircleHeadshot = await noblox.getPlayerThumbnail(`${userId}`, 420, `png`, true, `Headshot`).then(result => { return result[0].imageUrl });
+      //const playerRobloxData = await noblox.getPlayerInfo(userId)
       const userRobloxHeahshotFinal = thumbnail_CircleHeadshot
 
       //logic for bio
